@@ -24,229 +24,200 @@ The feature selection techniques used are:
 3.Embedded Method
 
 # CODING AND OUTPUT:
+```
+Name : Aishwarya S
+Register Number : 212222100003
+```
 
+```
 import pandas as pd
 from scipy import stats
 import numpy as np
-
 df=pd.read_csv("/content/bmi.csv")
+
 df.head()
-
 df.dropna()
-![image](https://github.com/user-attachments/assets/21d44096-14b0-4def-b07a-1d6d32f4e702)
+```
+![image](https://github.com/user-attachments/assets/ff7841c3-ea9d-4a2d-b2d5-984a8ef9e1dd)
 
-max_vals=np.max(np.abs(df[['Height','Weight']]))
+```
+max_vals=np.max(np.abs(df[['Height']]))
 max_vals
+max_vals1=np.max(np.abs(df[['Weight']]))
+max_vals1
+print("Height =",max_vals)
+print("Weight =",max_vals1)
+```
+![Screenshot 2024-10-08 160759](https://github.com/user-attachments/assets/6cec529f-5068-4bd6-9cbe-76b7caf25c44)
+```
+df1=pd.read_csv("/content/bmi.csv")
 
 from sklearn.preprocessing import StandardScaler
-
 sc=StandardScaler()
-df1=df
 df1[['Height','Weight']]=sc.fit_transform(df1[['Height','Weight']])
-
 df1.head(10)
+```
+![Screenshot 2024-10-08 160906](https://github.com/user-attachments/assets/7735d008-2707-4e0e-b5fa-caeb2be7e327)
 
+```
 from sklearn.preprocessing import MinMaxScaler
-
 scaler=MinMaxScaler()
 df[['Height','Weight']]=scaler.fit_transform(df[['Height','Weight']])
-
 df.head(10)
-![image](https://github.com/user-attachments/assets/7a7c1db8-06a2-4be5-9dfe-2a13d4a5e76a)
+```
+![Screenshot 2024-10-08 160957](https://github.com/user-attachments/assets/6d8ae21c-fcf5-45b4-af37-000af98b9f8f)
 
+```
 from sklearn.preprocessing import Normalizer
+df2=pd.read_csv("/content/bmi.csv")
 scaler=Normalizer()
-df2=df
-df2[['Height','Weight']]=scaler.fit_transform(df[['Height','Weight']])
+df[['Height','Weight']]=scaler.fit_transform(df[['Height','Weight']])
+df
+```
+![Screenshot 2024-10-08 161054](https://github.com/user-attachments/assets/2fdead27-5061-487a-9e6e-2ac7f84dc1aa)
 
-df2
-![image](https://github.com/user-attachments/assets/1cc21e2a-0705-4f3a-a36e-6e155deea9e8)
-
+```
 df3=pd.read_csv("/content/bmi.csv")
-
 from sklearn.preprocessing import MaxAbsScaler
 scaler=MaxAbsScaler()
 df3[['Height','Weight']]=scaler.fit_transform(df3[['Height','Weight']])
-
 df3
+```
+![Screenshot 2024-10-08 161325](https://github.com/user-attachments/assets/331bd452-a95b-495b-94c3-5c81affec7eb)
 
+```
 df4=pd.read_csv("/content/bmi.csv")
-
 from sklearn.preprocessing import RobustScaler
-scaler = RobustScaler()
+scaler=RobustScaler()
 df4[['Height','Weight']]=scaler.fit_transform(df4[['Height','Weight']])
 df4.head()
-![image](https://github.com/user-attachments/assets/b078ccb3-92dd-4679-aaad-3421e24b1377)
+```
+![Screenshot 2024-10-08 161453](https://github.com/user-attachments/assets/4e8fab38-250a-40a7-8302-cb05cf205e30)
 
+## FEATURE SELECTION SUING KNN CLASSIFICATION:
+
+```
 import pandas as pd
 import numpy as np
-import matplotlib
-import matplotlib.pyplot as plt
 import seaborn as sns
-import statsmodels.api as sm
+
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
-from sklearn.feature_selection import RFE
-from sklearn.linear_model import RidgeCV, LassoCV,Ridge,Lasso
-from sklearn.feature_selection import SelectKBest
-from sklearn.feature_selection import mutual_info_classif
-from sklearn.feature_selection import mutual_info_regression
-from sklearn.feature_selection import chi2
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix
 
-df=pd.read_csv('/content/titanic_dataset (1).csv')
-df.columns
-
-df.shape
-
-x = df.drop("Survived", axis=1)
-y = df['Survived']
-
-df1=df.drop(["Name","Sex","Ticket","Cabin","Embarked"],axis=1)
-
-df1.columns
-
-df1['Age'].isnull().sum()
-
-df1['Age'].fillna(method='ffill')
-![image](https://github.com/user-attachments/assets/3fb4a6fb-667b-4155-a340-531c3ea2c546)
-
-df1['Age']=df1['Age'].fillna(method='ffill')
-
-df1['Age'].isnull().sum()
-
-feature=SelectKBest(mutual_info_classif,k=3)
-
-df1.columns
-
-cols=df1.columns.tolist()
-cols[-1],cols[1]=cols[1],cols[-1]
-df1=df1[cols]
-
-df1.columns
-
-X=df1.iloc[:,0:6]
-y=df1.iloc[:,6]
-
-X.columns
-
-y=y.to_frame()
-
-y.columns
-
-"""Filter Method
-Chi2 method
-"""
-
-data=pd.read_csv('/content/titanic_dataset (1).csv')
-
-data=data.dropna()
-
-X=data.drop(['Survived','Name','Ticket'],axis=1)
-y=data['Survived']
-
-X
-![image](https://github.com/user-attachments/assets/4460abb5-6102-4a47-8a6f-92b302d7717b)
-
-
-data["Sex"]=data["Sex"].astype("category")
-data["Cabin"]=data["Cabin"].astype("category")
-data["Embarked"]=data["Embarked"].astype("category")
-
-data["Sex"]=data["Sex"].cat.codes
-data["Cabin"]=data["Cabin"].cat.codes
-data["Embarked"]=data["Embarked"].cat.codes
-
+data=pd.read_csv("/content/income(1) (1).csv",na_values=[ " ?"])
 data
+```
+![Screenshot 2024-10-08 161612](https://github.com/user-attachments/assets/48630cbd-57b3-44dd-8660-a7ddeca3ba74)
 
-from sklearn.preprocessing import LabelEncoder
+```
+data.isnull().sum()
+```
+![Screenshot 2024-10-08 161818](https://github.com/user-attachments/assets/ccf972f0-a972-43d2-a2bb-6d1d64c29a8b)
 
-if 'gender' in X.columns:
-    # Using Label Encoding
-    le = LabelEncoder()
-    X['gender'] = le.fit_transform(X['gender'])
+```
+missing=data[data.isnull().any(axis=1)]
+missing
+```
+![Screenshot 2024-10-08 161918](https://github.com/user-attachments/assets/aa82db06-6d1b-4ed0-ac4a-810d381d12b9)
 
-# Alternatively, using One-Hot Encoding
-X = pd.get_dummies(X)
+```
+data2=data.dropna(axis=0)
+data2
+```
+![Screenshot 2024-10-08 162013](https://github.com/user-attachments/assets/f8d1610d-4faa-47b8-8391-c764102e0262)
 
-# Now you can apply SelectKBest
-k = 5
-selector = SelectKBest(score_func=chi2, k=k)
-X_new = selector.fit_transform(X, y)
+```
+sal=data["SalStat"]
 
-selected_feature_indices=selector.get_support(indices=True)
-selected_features=X.columns[selected_feature_indices]
-print("Selected Features:")
-print("selected_features")
+data2["SalStat"]=data["SalStat"].map({' less than or equal to 50,000':0,' greater than 50,000':1})
+print(data2['SalStat'])
 
-X.info()
+```
+![Screenshot 2024-10-08 162123](https://github.com/user-attachments/assets/109845b5-174e-4ba1-8ca5-546a47ac00ec)
 
-print(X.columns)
+```
+sal2=data2['SalStat']
 
-print(X.columns.tolist())
-![image](https://github.com/user-attachments/assets/60e51158-0d00-4232-9532-b4659f304af0)
+dfs=pd.concat([sal,sal2],axis=1)
+dfs
+```
+![Screenshot 2024-10-08 162206](https://github.com/user-attachments/assets/dbb61dd7-6ea0-486e-8cf0-b9111d9673f4)
 
+```
+data2
+```
+![Screenshot 2024-10-08 162252](https://github.com/user-attachments/assets/bd797da5-d0eb-42f1-b71a-be691f3676f3)
 
-columns_to_drop = ['Name', 'Sex', 'Ticket', 'Cabin', 'Embarked']
-existing_columns_to_drop = [col for col in columns_to_drop if col in X.columns]
-X = X.drop(columns=existing_columns_to_drop)
+```
+new_data=pd.get_dummies(data2, drop_first=True)
+new_data
+```
+![Screenshot 2024-10-08 162339](https://github.com/user-attachments/assets/2c5cf57d-9dd6-4ad4-b61d-416a747e89b6)
 
-X = X.drop(columns=columns_to_drop, errors='ignore')
+```
+columns_list=list(new_data.columns)
+print(columns_list)
+```
+![Screenshot 2024-10-08 162437](https://github.com/user-attachments/assets/b4ec0bfb-7bfe-41b9-878a-aa4a294625e2)
 
-from sklearn.feature_selection import SelectKBest, f_regression
+```
+features=list(set(columns_list)-set(['SalStat']))
+print(features)
+```
+![image](https://github.com/user-attachments/assets/a5f40b82-52b0-4ce8-9756-8ea04f222c6c)
 
-selector=SelectKBest(score_func=f_regression,k=5)
-X_new=selector.fit_transform(X,y)
+```
+y=new_data['SalStat']
+print(y)
+```
+![Screenshot 2024-10-08 162745](https://github.com/user-attachments/assets/e2369ab4-5449-476f-b74d-e7d25b12e580)
 
-selected_feature_indices=selector.get_support(indices=True)
-selected_features=X.columns[selected_feature_indices]
-print("Selected Features:")
-print(selected_features)
+```
+x=new_data[features].values
+print(x)
+```
+![Screenshot 2024-10-08 162946](https://github.com/user-attachments/assets/e6ee0a5e-bb06-49bd-8db1-cdb30346d871)
 
-from scipy.stats import chi2_contingency
+```
+train_x,test_x,train_y,test_y=train_test_split(x,y,test_size=0.3,random_state=0)
+KNN_classifier=KNeighborsClassifier(n_neighbors = 5)
+KNN_classifier.fit(train_x,train_y)
+```
+![Screenshot 2024-10-08 163032](https://github.com/user-attachments/assets/63f0f7c7-b2a2-4a0a-ae15-07ca457c813c)
 
-tips=sns.load_dataset('tips')
-tips.head()
+```
+prediction=KNN_classifier.predict(test_x)
 
-contingency_table=pd.crosstab(tips['sex'],tips['time'])
+confusionMatrix=confusion_matrix(test_y, prediction)
+print(confusionMatrix)
+```
+![Screenshot 2024-10-08 163114](https://github.com/user-attachments/assets/a5d462f3-5c48-4d44-bb1a-eddda40170c3)
 
-print(contingency_table)
-
-chi2,p,_,_=chi2_contingency(contingency_table)
-
-print(f"Statistic:{chi2}")
-print(f"p-value:{p}")
-
+```
 import pandas as pd
 from sklearn.feature_selection import SelectKBest, mutual_info_classif, f_classif
-
-# Create a sample dataset
-data = {
-    'Feature1': [1, 2, 3, 4, 5],
-    'Feature2': ['A', 'B', 'C', 'A', 'B'],
-    'Feature3': [0, 1, 1, 0, 1],
-    'Target': [0, 1, 1, 0, 1]
+data= {
+    'Feature1' : [1,2,3,4,5],
+    'Feature2' : ['A','B','C','A','B'],
+    'Feature3' : [0,1,1,0,1],
+    'Target' : [0,1,1,0,1]
 }
+df=pd.DataFrame(data)
 
-df = pd.DataFrame(data)
+X=df[['Feature1','Feature3']]
+y=df['Target']
 
-# Separate features and target
-X = df[['Feature1', 'Feature3']]
-y = df['Target']
+selector = SelectKBest(score_func= mutual_info_classif, k=1)
+X_new=selector.fit_transform(X,y)
 
-# SelectKBest with mutual_info_classif for feature selection
-selector = SelectKBest(score_func=mutual_info_classif, k=1)
-X_new = selector.fit_transform(X, y)
-
-# Get the selected feature indices
 selected_feature_indices = selector.get_support(indices=True)
 
-# Print the selected features
-selected_features = X.columns[selected_feature_indices]
-print("Selected Features:")
-print(selected_features)
+```
 
-
+![Screenshot 2024-10-08 234436](https://github.com/user-attachments/assets/f58d4f84-ab62-4ed1-9614-c67a082f514f)
 
 
 # RESULT:
- Feature Scaling and Feature Selection processes are successfully done for the given data
+       Thus, Feature selection and Feature scaling has been used on the given dataset.
+
